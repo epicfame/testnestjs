@@ -83,7 +83,7 @@ export class AuthService {
   async login(user: any) {
     const payload = { email: user.email, sub: user.id };
     console.log(payload, 'this is payload')
-    // const token = this.jwtService.sign(payload)
+    // const token = this.jwtService.signAsync(payload)
     const token = this.jwtService.sign(payload, { secret: process.env.JWT_SECRET });
     console.log('Generated JWT:', token)
     return {
@@ -91,6 +91,5 @@ export class AuthService {
       access_token: token,
     };
   }
-
 
 }
