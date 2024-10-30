@@ -1,9 +1,10 @@
-import { Controller, Post, Body, Get, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Put, Delete, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserDto } from './dto/user.dto';
-import { User } from './entities/user.entity';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
+@UseGuards(AuthGuard('jwt')) // Protects all routes in this controller with JWT authentication
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -14,6 +15,7 @@ export class UsersController {
 
   @Get()
   async findAll() {
+    console.log("Getting all users")
     return this.usersService.findAll();
   }
 
@@ -33,7 +35,7 @@ export class UsersController {
   }
 
   @Post('register')
-  async register(@Body() userData: UserDto) { // Use UserDto for validation
+  async register(@Body() userData: UserDto) { 
     return this.usersService.create(userData);
   }
 }
